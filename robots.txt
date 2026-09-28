@@ -3,4 +3,4 @@ Allow: /
 Disallow: /merci.html
 Disallow: /en/thanks.html
 
-Sitemap: https://la-chapelle-alzonne.netlify.app/sitemap.xml
+Sitemap: https://lachapelle-carcassonne.com/sitemap.xml
