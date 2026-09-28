@@ -138,4 +138,38 @@
       })
       .catch(function () { /* fonction non activée : le formulaire fonctionne sans calendrier */ });
   }
+
+  /* En-tête : transparent sur la photo d'accueil, blanc ensuite */
+  var hero = document.querySelector('.hero');
+  function onHeader() { if (header && hero) header.classList.toggle('solid', window.scrollY > hero.offsetHeight - 100); }
+  window.addEventListener('scroll', onHeader, { passive: true }); onHeader();
+
+  /* Diaporama d'accueil */
+  var slides = document.querySelectorAll('.slides img');
+  if (slides.length > 1 && !reduce) {
+    var si = 0;
+    setInterval(function () {
+      slides[si].classList.remove('on');
+      si = (si + 1) % slides.length;
+      var s = slides[si]; s.loading = 'eager';
+      s.style.animation = 'none'; void s.offsetWidth; s.style.animation = '';
+      s.classList.add('on');
+    }, 6500);
+  }
+
+  /* Barre de réservation de l'accueil */
+  var bb = document.getElementById('bookbar');
+  if (bb && a && d) {
+    var bi = document.getElementById('bb-in'), bo = document.getElementById('bb-out'), bg = document.getElementById('bb-g');
+    bi.min = a.min; bi.max = a.max; bo.min = d.min;
+    bi.addEventListener('change', function () { if (bi.value) { bo.min = addDays(bi.value, MIN); if (!bo.value || bo.value < bo.min) bo.value = bo.min; } });
+    bb.addEventListener('submit', function (e) {
+      e.preventDefault();
+      a.value = bi.value; d.value = bo.value;
+      var ad = document.getElementById('adultes'); if (ad) ad.value = bg.value;
+      if (a.value) { var t = new Date(a.value + 'T12:00:00'), n = new Date(); offset = Math.max(0, (t.getFullYear() - n.getFullYear()) * 12 + t.getMonth() - n.getMonth()); }
+      render();
+      document.getElementById('reserver').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    });
+  }
 })();
