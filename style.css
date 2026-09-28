@@ -105,8 +105,9 @@ header .btn:hover{background:var(--pierre-fonce);border-color:var(--pierre-fonce
 
 /* Le studio : cartes */
 .rooms{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin-top:60px}
-.room img{width:100%;aspect-ratio:3/4;object-fit:cover;margin-bottom:22px;transition:transform .6s ease}
-.room figure{margin:0;overflow:hidden}
+.room img{width:100%;aspect-ratio:4/3;object-fit:cover;margin-bottom:22px;transition:transform .6s ease}
+.room figure{margin:0 0 22px;overflow:hidden}
+.room figure img{margin-bottom:0}
 .room:hover img{transform:scale(1.04)}
 .room h3{margin-bottom:8px}
 .room p{font-size:15px;color:var(--gris);line-height:1.65}
