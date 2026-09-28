@@ -146,11 +146,7 @@
 <div class="cal-legend"><span><i style="background:#fff;border:1px solid #D6CDBE"></i>Libre</span><span><i style="border:1px solid #B9B0A4"></i>Réservé</span><span><i style="background:#86653A"></i>Vos dates</span></div>
 </div>
 </div>
-<form class="booking" id="booking" method="POST" action="https://api.web3forms.com/submit" data-thanks="/merci.html" data-err="L'envoi n'a pas fonctionné. Réessayez, ou écrivez à conciergerie.lauragaise11@gmail.com.">
-<input type="hidden" name="access_key" value="6bf5457a-6351-430e-8e09-225daac68261">
-<input type="hidden" name="subject" value="Demande de réservation – La Chapelle">
-<input type="hidden" name="from_name" value="Site La Chapelle">
-<input type="hidden" name="redirect" value="https://lachapelle-carcassonne.com/merci.html">
+<form class="booking" id="booking" method="POST" action="/.netlify/functions/reservation" data-thanks="/merci.html" data-err="L'envoi n'a pas fonctionné. Réessayez, ou écrivez à conciergerie.lauragaise11@gmail.com.">
 <input type="hidden" name="langue" value="fr">
 <input type="checkbox" name="botcheck" class="hp" style="display:none" tabindex="-1" autocomplete="off">
 <h3>Demande de réservation</h3>
@@ -169,7 +165,7 @@
 <label>E-mail<input type="email" name="email" autocomplete="email" required></label>
 <fieldset class="svc"><legend>Services souhaités (facultatif)</legend><label class="consent"><input type="checkbox" name="services" value="Location de vélos"> Location de vélos</label><label class="consent"><input type="checkbox" name="services" value="Cassoulet maison"> Cassoulet maison</label><label class="consent"><input type="checkbox" name="services" value="Plateau de grazing"> Plateau de grazing</label><label class="consent"><input type="checkbox" name="services" value="Vin du terroir"> Vin du terroir</label></fieldset>
 <label>Message<textarea name="message" rows="4" placeholder="Heure d'arrivée prévue, questions…"></textarea></label>
-<label class="consent"><input type="checkbox" name="consentement" required> J'accepte que mes coordonnées soient utilisées pour traiter ma demande de réservation.</label>
+<p class="small privacy-note">Vos informations servent uniquement à traiter votre demande et organiser votre séjour. Elles sont transmises au propriétaire et à la Conciergerie Lauragaise. <a href="/politique-confidentialite.html">Politique de confidentialité</a></p>
 <button class="btn gold" type="submit">Envoyer ma demande</button>
 <p class="form-msg" role="status" aria-live="polite"></p>
 <p class="small">Sans engagement : la réservation est confirmée par la conciergerie, avec le contrat de location.</p>
@@ -214,7 +210,7 @@
 <footer>
 <a class="logo" href="#top" aria-label="La Chapelle"><b>La Chapelle</b><small>Alzonne · Carcassonne</small></a>
 <p>Meublé de tourisme déclaré en mairie d'Alzonne (Aude)</p>
-<p><a href="mentions-legales.html">Mentions légales</a> · <a href="en/">English version</a></p>
+<p><a href="mentions-legales.html">Mentions légales</a> · <a href="politique-confidentialite.html">Confidentialité</a> · <a href="en/">English version</a></p>
 </footer>
 
 <dialog id="lb" aria-label="Agrandir">

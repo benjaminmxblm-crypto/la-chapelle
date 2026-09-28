@@ -57,9 +57,18 @@ export default async (req) => {
   if (!key) return new Response('non configuré', { status: 503 });
   if (req.method !== 'POST') return new Response('méthode', { status: 405 });
 
+  // JSON (JavaScript) ou formulaire classique (navigateur sans JavaScript)
+  const isForm = !(req.headers.get('content-type') || '').includes('application/json');
   let d;
-  try { d = await req.json(); } catch { return new Response('json', { status: 400 }); }
-  if (d.botcheck) return Response.json({ success: true }); // robot : on ignore sans le dire
+  try {
+    if (isForm) {
+      const fd = await req.formData();
+      d = Object.fromEntries(fd.entries()); d.services = fd.getAll('services');
+    } else d = await req.json();
+  } catch { return new Response('requête invalide', { status: 400 }); }
+  const thanks = d.langue === 'en' ? '/en/thanks.html' : '/merci.html';
+  const done = () => (isForm ? Response.redirect(new URL(thanks, req.url), 303) : Response.json({ success: true }));
+  if (d.botcheck) return done(); // robot : on ignore sans le dire
   const lang = d.langue === 'en' ? 'en' : 'fr';
   if (!isDate(d.arrivee) || !isDate(d.depart) || d.depart <= d.arrivee || !isMail(d.email) || !d.nom) {
     return Response.json({ success: false, error: 'champs' }, { status: 400 });
@@ -114,5 +123,5 @@ ${rows([[t.a, esc(t.cin) + (lang === 'en' ? ', from 5 pm' : ', à partir de 17 h
     await send(key, { from: FROM, to: [d.email], reply_to: CONCIERGE, subject: t.subj, html: client });
   } catch (e) { console.error(e); /* la demande est partie : on ne bloque pas le client */ }
 
-  return Response.json({ success: true });
+  return done();
 };

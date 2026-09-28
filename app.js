@@ -175,41 +175,23 @@
     });
   }
 
-  /* Envoi du formulaire : d'abord notre fonction (Resend, e-mails + confirmation client),
-     sinon Web3Forms en secours pour ne jamais perdre une demande */
+  /* Envoi du formulaire vers notre fonction (e-mails via Resend) */
   var form = document.getElementById('booking');
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var btn = form.querySelector('button[type=submit]'), msg = form.querySelector('.form-msg');
       var fd = new FormData(form);
-      var svc = fd.getAll('services');
       var data = {
         langue: fd.get('langue'), arrivee: fd.get('arrivee'), depart: fd.get('depart'),
         adultes: fd.get('adultes'), enfants: fd.get('enfants'), nom: fd.get('nom'),
         telephone: fd.get('telephone'), email: fd.get('email'), message: fd.get('message'),
-        services: svc, botcheck: fd.get('botcheck') ? 1 : 0
-      };
-      var ok = function () { location.href = form.dataset.thanks; };
-      var fail = function () { btn.disabled = false; msg.textContent = form.dataset.err; };
-      var viaWeb3 = function () {
-        var f = function (s) { return s ? s.split('-').reverse().join('/') : ''; };
-        fd.delete('services'); if (svc.length) fd.append('services', svc.join(', '));
-        fd.delete('consentement'); fd.delete('redirect');
-        fd.set('subject', 'Demande de réservation La Chapelle – ' + f(data.arrivee) + ' au ' + f(data.depart) + ' – ' + (data.nom || ''));
-        fd.set('replyto', data.email || '');
-        return fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { Accept: 'application/json' }, body: fd })
-          .then(function (r) { return r.json(); })
-          .then(function (j) { if (j.success) ok(); else throw 0; });
+        services: fd.getAll('services'), botcheck: fd.get('botcheck') ? 1 : 0
       };
       btn.disabled = true; msg.textContent = '';
-      fetch('/.netlify/functions/reservation', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
-        .then(function (r) {
-          if (r.ok) return ok();
-          if (r.status === 400) throw 0;      // données invalides : inutile de réessayer ailleurs
-          return viaWeb3();                   // fonction non configurée ou indisponible
-        })
-        .catch(function (err) { if (err === 0) return fail(); return viaWeb3().catch(fail); });
+      fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+        .then(function (r) { if (r.ok) location.href = form.dataset.thanks; else throw 0; })
+        .catch(function () { btn.disabled = false; msg.textContent = form.dataset.err; });
     });
   }
 })();

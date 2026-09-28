@@ -146,11 +146,7 @@
 <div class="cal-legend"><span><i style="background:#fff;border:1px solid #D6CDBE"></i>Available</span><span><i style="border:1px solid #B9B0A4"></i>Booked</span><span><i style="background:#86653A"></i>Your dates</span></div>
 </div>
 </div>
-<form class="booking" id="booking" method="POST" action="https://api.web3forms.com/submit" data-thanks="/en/thanks.html" data-err="Sending failed. Please try again, or email conciergerie.lauragaise11@gmail.com.">
-<input type="hidden" name="access_key" value="6bf5457a-6351-430e-8e09-225daac68261">
-<input type="hidden" name="subject" value="Demande de réservation – La Chapelle">
-<input type="hidden" name="from_name" value="Site La Chapelle">
-<input type="hidden" name="redirect" value="https://lachapelle-carcassonne.com/en/thanks.html">
+<form class="booking" id="booking" method="POST" action="/.netlify/functions/reservation" data-thanks="/en/thanks.html" data-err="Sending failed. Please try again, or email conciergerie.lauragaise11@gmail.com.">
 <input type="hidden" name="langue" value="en">
 <input type="checkbox" name="botcheck" class="hp" style="display:none" tabindex="-1" autocomplete="off">
 <h3>Booking request</h3>
@@ -169,7 +165,7 @@
 <label>Email<input type="email" name="email" autocomplete="email" required></label>
 <fieldset class="svc"><legend>Extras you'd like (optional)</legend><label class="consent"><input type="checkbox" name="services" value="Bike hire"> Bike hire</label><label class="consent"><input type="checkbox" name="services" value="Homemade cassoulet"> Homemade cassoulet</label><label class="consent"><input type="checkbox" name="services" value="Grazing platter"> Grazing platter</label><label class="consent"><input type="checkbox" name="services" value="Local wine"> Local wine</label></fieldset>
 <label>Message<textarea name="message" rows="4" placeholder="Expected arrival time, questions…"></textarea></label>
-<label class="consent"><input type="checkbox" name="consentement" required> I agree that my details may be used to handle my booking request.</label>
+<p class="small privacy-note">Your details are only used to handle your request and organise your stay. They are shared with the owner and Conciergerie Lauragaise. <a href="/en/privacy.html">Privacy policy</a></p>
 <button class="btn gold" type="submit">Send my request</button>
 <p class="form-msg" role="status" aria-live="polite"></p>
 <p class="small">No commitment: your booking is confirmed by the concierge, together with the rental agreement.</p>
@@ -214,7 +210,7 @@
 <footer>
 <a class="logo" href="#top" aria-label="La Chapelle"><b>La Chapelle</b><small>Alzonne · Carcassonne</small></a>
 <p>Holiday rental registered with the town hall of Alzonne (Aude)</p>
-<p><a href="../mentions-legales.html">Legal notice</a> · <a href="../">Version française</a></p>
+<p><a href="../mentions-legales.html">Legal notice</a> · <a href="privacy.html">Privacy</a> · <a href="../">Version française</a></p>
 </footer>
 
 <dialog id="lb" aria-label="Enlarge">
