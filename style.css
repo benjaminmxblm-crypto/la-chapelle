@@ -48,34 +48,33 @@ header{position:sticky;top:0;z-index:5;background:rgba(225,228,218,.92);backdrop
 .nav .btn{min-height:44px;padding:0 20px;font-size:15px}
 @media(max-width:920px){.nav ul{display:none}}
 
-/* Ouverture immersive : on entre par l'ogive */
-.portal{position:relative;height:230svh;background:var(--cypres)}
-.portal-stage{position:sticky;top:0;height:100svh;overflow:hidden;--p:0;--w0:min(22vw,36vh);--y:.85}
-.portal-mask{position:absolute;inset:0;
-  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 137' preserveAspectRatio='none'%3E%3Cpath d='M0,137 V55 C0,25 30,6 50,0 C70,6 100,25 100,55 V137 Z'/%3E%3C/svg%3E") no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 137' preserveAspectRatio='none'%3E%3Cpath d='M0,137 V55 C0,25 30,6 50,0 C70,6 100,25 100,55 V137 Z'/%3E%3C/svg%3E") no-repeat;
-  --w:calc(var(--w0) + (var(--w1) - var(--w0)) * var(--p));
-  -webkit-mask-size:var(--w) calc(var(--w) * 1.37);mask-size:var(--w) calc(var(--w) * 1.37);
-  -webkit-mask-position:50% calc(var(--y) * 100% - 40% * var(--p));mask-position:50% calc(var(--y) * 100% - 40% * var(--p));
-  --w1:max(260vw,300vh);
-  }
-.portal-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%;--k:max(0, 1 - var(--p) * 2.2);transform:translateY(calc(var(--k) * 30svh)) scale(calc(1 + .15 * var(--k)));filter:brightness(calc(.8 + .2 * var(--p)))}
-.portal-frame{position:absolute;left:calc(50% - (var(--w0) + 28px) / 2);top:calc((100svh - var(--w0) * 1.37) * var(--y) - 19px);width:calc(var(--w0) + 28px);height:calc((var(--w0) + 28px) * 1.37);opacity:calc(1 - var(--p) * 4);pointer-events:none}
-.portal-title{position:absolute;left:var(--pad);right:var(--pad);top:clamp(92px,13vh,130px);text-align:center;color:var(--lambris);opacity:calc(1 - var(--p) * 3);translate:0 calc(var(--p) * -60px)}
+/* Ouverture : une porte en ogive qui grandit, sans jamais agrandir la photo au-delà de sa netteté */
+.portal{position:relative;height:210svh;background:var(--cypres)}
+.portal-stage{position:sticky;top:0;height:100svh;overflow:hidden;--p:0;
+  --h0:46svh;--h1:calc(100svh - 100px);--x0:50%;--x1:71%;
+  --h:calc(var(--h0) + (var(--h1) - var(--h0)) * var(--p));--x:calc(var(--x0) + (var(--x1) - var(--x0)) * var(--p))}
+.door{position:absolute;bottom:0;height:var(--h);width:calc(var(--h) / 1.37);left:calc(var(--x) - var(--h) / 2.74)}
+.door img{width:100%;height:100%;object-fit:cover;object-position:50% 40%;clip-path:url(#ogive);filter:brightness(calc(.82 + .18 * var(--p)))}
+.door svg{position:absolute;left:-16px;right:-16px;top:-22px;bottom:0;width:calc(100% + 32px);height:calc(100% + 22px);overflow:visible;pointer-events:none}
+.portal-title{position:absolute;left:var(--pad);right:var(--pad);top:clamp(92px,13vh,130px);text-align:center;color:var(--lambris);opacity:calc(1 - var(--p) * 2.6);translate:0 calc(var(--p) * -50px)}
 .portal-title h1{font-size:clamp(44px,6vw,96px);line-height:.98;max-width:19ch;margin:0 auto}
-.portal-hint{position:absolute;bottom:26px;left:0;right:0;text-align:center;color:#C3CABB;font-size:14px;opacity:calc(1 - var(--p) * 5)}
-.portal-hint svg{display:block;margin:8px auto 0;animation:nudge 2.4s ease-in-out infinite}
+.portal-hint{position:absolute;bottom:22px;left:24px;color:#C3CABB;font-size:14px;opacity:calc(1 - var(--p) * 5);writing-mode:vertical-rl;display:flex;align-items:center;gap:10px}
+.portal-hint svg{animation:nudge 2.4s ease-in-out infinite}
 @keyframes nudge{50%{translate:0 6px}}
-.portal-caption{position:absolute;left:var(--pad);bottom:clamp(28px,6vh,64px);max-width:560px;background:rgba(31,43,32,.86);color:var(--lambris);padding:28px 32px;opacity:clamp(0,(var(--p) - .72) * 5,1);translate:0 calc((1 - clamp(0,(var(--p) - .72) * 5,1)) * 24px)}
-.portal-caption p{color:#D5DACD;margin-bottom:22px}
-.portal-caption .note{color:#C3CABB;margin:18px 0 0}
+.portal-caption{position:absolute;left:var(--pad);top:50%;width:min(46vw,600px);translate:0 calc(-45% + (1 - var(--q)) * 30px);color:var(--lambris);--q:clamp(0,(var(--p) - .55) * 3,1);opacity:var(--q)}
+.portal-caption h2{font-size:clamp(40px,4.6vw,72px);margin-bottom:24px}
+.portal-caption p{color:#D5DACD;margin-bottom:28px;max-width:46ch}
+.portal-caption .note{color:#C3CABB;margin:22px 0 0}
 .portal-caption .note strong{color:var(--bougie)}
-.portal-caption a:not(.btn){color:var(--bougie)}
 @media(max-width:720px){
-  .portal-stage{--w0:62vw;--y:.8}
-  .portal-title h1{max-width:12ch}
-  .portal-caption{left:14px;right:14px;padding:22px}
+  .portal-stage{--h0:44svh;--h1:52svh;--x1:50%}
+  .portal-caption{left:20px;right:20px;width:auto;top:84px;translate:0 calc((1 - var(--q)) * 20px)}
+  .portal-caption h2{font-size:34px;margin-bottom:12px}
+  .portal-caption p{font-size:15px;margin-bottom:16px}
+  .portal-caption .note{display:none}
+  .portal-hint{left:auto;right:16px}
 }
-@media (prefers-reduced-motion:reduce){.portal{height:auto}.portal-stage{position:relative;--p:1!important}.portal-title,.portal-hint,.portal-frame{display:none}}
+@media (prefers-reduced-motion:reduce){.portal{height:auto}.portal-stage{position:relative;--p:1!important}.portal-title,.portal-hint{display:none}}
 header.on-dark{background:rgba(31,43,32,.55)}
 header.on-dark .logo,header.on-dark .nav ul a,header.on-dark .lang{color:var(--lambris)}
 header{transition:background .3s}
@@ -215,3 +214,30 @@ ol.day p{color:#C3CABB;font-size:16px;line-height:1.7}
 .m button.sel{background:var(--ocre);color:#fff}
 .cal-legend{display:flex;gap:18px;margin-top:12px;font-size:13px;color:var(--gris)}
 .cal-legend i{display:inline-block;width:12px;height:12px;vertical-align:-1px;margin-right:6px;border-radius:2px}
+
+/* La visite : défilement horizontal épinglé */
+.tour{position:relative;height:calc(var(--n) * 85svh)}
+.tour-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding-top:64px}
+.tour-head{padding:0 var(--pad);display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:clamp(20px,3vh,36px)}
+.tour-head p{max-width:40ch}
+.tour-track{display:flex;gap:5vw;padding:0 var(--pad);will-change:transform}
+.room{flex:0 0 auto;width:min(80vw,1080px);display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:clamp(24px,3vw,48px);align-items:end}
+.room img{width:100%;height:min(60svh,600px);object-fit:cover}
+.room h3{font-size:clamp(34px,3.4vw,52px);margin-bottom:14px}
+.room p{color:var(--gris);font-size:17px;line-height:1.7;max-width:36ch}
+.room .kicker{font-family:var(--display);font-style:italic;color:var(--ocre);font-size:20px;margin-bottom:6px}
+.tour-bar{height:2px;background:#C3C9BA;margin:clamp(24px,4vh,40px) var(--pad) 0}
+.tour-bar i{display:block;height:100%;width:0;background:var(--ocre)}
+@media(max-width:720px),(prefers-reduced-motion:reduce){
+  .tour{height:auto}
+  .tour-stage{position:static;height:auto;padding:clamp(72px,9vw,120px) 0}
+  .tour-head{flex-direction:column;align-items:start}
+  .tour-track{flex-direction:column;gap:48px;transform:none!important}
+  .room{width:auto;grid-template-columns:1fr}
+  .room img{height:auto;aspect-ratio:4/3}
+  .tour-bar{display:none}
+}
+
+/* Grain de pierre */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:40;opacity:.55;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .3 0 0 0 0 .22 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}

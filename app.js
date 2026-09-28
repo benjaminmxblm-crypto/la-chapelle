@@ -18,6 +18,22 @@
     stage.style.setProperty('--p', p.toFixed(4));
     if (header) header.classList.toggle('on-dark', r.bottom > 72);
   }
+  /* La visite : défilement horizontal */
+  var tour = document.querySelector('.tour'), track = document.querySelector('.tour-track'), bar = document.querySelector('.tour-bar i');
+  function onTour() {
+    if (!tour) return;
+    if (reduce || window.innerWidth <= 720) { track.style.transform = ''; return; }
+    var r = tour.getBoundingClientRect();
+    var total = tour.offsetHeight - window.innerHeight;
+    var tp = Math.min(1, Math.max(0, -r.top / total));
+    var dist = track.scrollWidth - window.innerWidth;
+    track.style.transform = 'translateX(' + (-tp * dist).toFixed(1) + 'px)';
+    if (bar) bar.style.width = (tp * 100).toFixed(2) + '%';
+  }
+  window.addEventListener('scroll', function () { requestAnimationFrame(onTour); }, { passive: true });
+  window.addEventListener('resize', onTour);
+  onTour();
+
   if (portal) {
     window.addEventListener('scroll', function () { requestAnimationFrame(onScroll); }, { passive: true });
     window.addEventListener('resize', onScroll);
