@@ -146,10 +146,13 @@
 <div class="cal-legend"><span><i style="background:#fff;border:1px solid #D6CDBE"></i>Available</span><span><i style="border:1px solid #B9B0A4"></i>Booked</span><span><i style="background:#86653A"></i>Your dates</span></div>
 </div>
 </div>
-<form class="booking" name="reservation" method="POST" action="/en/thanks.html" data-netlify="true" netlify-honeypot="bot-field">
-<input type="hidden" name="form-name" value="reservation">
+<form class="booking" id="booking" method="POST" action="https://api.web3forms.com/submit" data-thanks="/en/thanks.html" data-err="Sending failed. Please try again, or email conciergerie.lauragaise11@gmail.com.">
+<input type="hidden" name="access_key" value="6bf5457a-6351-430e-8e09-225daac68261">
+<input type="hidden" name="subject" value="Demande de réservation – La Chapelle">
+<input type="hidden" name="from_name" value="Site La Chapelle">
+<input type="hidden" name="redirect" value="https://la-chapelle-alzonne.netlify.app/en/thanks.html">
 <input type="hidden" name="langue" value="en">
-<p class="hp"><label>Ne pas remplir <input name="bot-field"></label></p>
+<input type="checkbox" name="botcheck" class="hp" style="display:none" tabindex="-1" autocomplete="off">
 <h3>Booking request</h3>
 <div class="row2">
 <label>Check-in<input type="date" name="arrivee" id="arrivee" required></label>
@@ -168,6 +171,7 @@
 <label>Message<textarea name="message" rows="4" placeholder="Expected arrival time, questions…"></textarea></label>
 <label class="consent"><input type="checkbox" name="consentement" required> I agree that my details may be used to handle my booking request.</label>
 <button class="btn gold" type="submit">Send my request</button>
+<p class="form-msg" role="status" aria-live="polite"></p>
 <p class="small">No commitment: your booking is confirmed by the concierge, together with the rental agreement.</p>
 </form>
 </div>

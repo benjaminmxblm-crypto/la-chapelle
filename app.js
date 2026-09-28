@@ -174,4 +174,25 @@
       document.getElementById('reserver').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
     });
   }
+
+  /* Envoi du formulaire par Web3Forms : un e-mail par demande */
+  var form = document.getElementById('booking');
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = form.querySelector('button[type=submit]'), msg = form.querySelector('.form-msg');
+      var fd = new FormData(form);
+      var svc = fd.getAll('services'); fd.delete('services');
+      if (svc.length) fd.append('services', svc.join(', '));
+      var f = function (s) { return s ? s.split('-').reverse().join('/') : ''; };
+      fd.set('subject', 'Demande de réservation La Chapelle – ' + f(fd.get('arrivee')) + ' au ' + f(fd.get('depart')) + ' – ' + (fd.get('nom') || ''));
+      fd.set('replyto', fd.get('email') || '');
+      fd.delete('redirect');
+      btn.disabled = true; msg.textContent = '';
+      fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { Accept: 'application/json' }, body: fd })
+        .then(function (r) { return r.json(); })
+        .then(function (j) { if (j.success) location.href = form.dataset.thanks; else throw 0; })
+        .catch(function () { btn.disabled = false; msg.textContent = form.dataset.err; });
+    });
+  }
 })();
