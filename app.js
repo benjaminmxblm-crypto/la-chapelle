@@ -86,6 +86,8 @@
   /* 4. Calendrier des disponibilités (lu depuis Airbnb via la fonction Netlify) */
   var cal = document.getElementById('cal');
   var busy = {}; var offset = 0;
+  // en fin de mois, ouvrir directement sur le mois suivant
+  (function () { var f = new Date(first + 'T12:00:00'); var dim = new Date(f.getFullYear(), f.getMonth() + 1, 0).getDate(); if (dim - f.getDate() < 7) offset = 1; })();
   function isBusy(s) { return !!busy[s]; }
   function rangeFree(s, e) { for (var x = s; x < e; x = addDays(x, 1)) if (isBusy(x)) return false; return true; }
   function render() {

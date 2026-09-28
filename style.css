@@ -173,17 +173,17 @@ input:focus,select:focus,textarea:focus{outline:1px solid var(--pierre);border-c
 .consent input{width:20px;min-height:20px;height:20px;margin-top:3px;flex:none;accent-color:var(--pierre-fonce)}
 
 /* Calendrier */
-.cal{background:var(--ivoire);padding:22px;border:1px solid var(--trait)}
+.cal{background:var(--ivoire);padding:22px;border:1px solid var(--trait);container-type:inline-size}
 .cal[hidden]{display:none}
 .cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .cal-head strong{font-family:var(--serif);font-weight:500;font-size:24px}
 .cal-head button{min-width:44px;min-height:44px;border:1px solid #D6CDBE;background:#fff;cursor:pointer;font-size:18px}
-.cal-months{display:grid;grid-template-columns:1fr 1fr;gap:22px}
-@media(max-width:560px){.cal-months{grid-template-columns:1fr}.cal-months .m:nth-child(2){display:none}}
+.cal-months{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px}
+@container (max-width:560px){.cal-months{grid-template-columns:minmax(0,1fr)}.cal-months .m:nth-child(2){display:none}}
 .m h4{margin:0 0 8px;font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.1em;text-transform:uppercase}
-.m .g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.m .g{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
 .m .wd{font-size:11px;color:var(--gris);text-align:center;padding:4px 0;text-transform:uppercase}
-.m button{aspect-ratio:1;border:0;background:#fff;font:inherit;font-size:13px;cursor:pointer;color:var(--encre);min-height:34px}
+.m button{aspect-ratio:1;border:0;background:#fff;font:inherit;font-size:14px;cursor:pointer;color:var(--encre);min-width:0;padding:0}
 .m button:hover:not(:disabled){outline:1px solid var(--pierre)}
 .m button:disabled{background:transparent;color:#B9B0A4;text-decoration:line-through;cursor:not-allowed}
 .m button.past:disabled{text-decoration:none;color:#CFC8BD}
