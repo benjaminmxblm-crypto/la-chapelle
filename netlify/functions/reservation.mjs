@@ -38,7 +38,12 @@ function rows(list) {
     .join('')}</table>`;
 }
 
+const toText = (html) => html.replace(/<style[\s\S]*?<\/style>/g, '').replace(/<\/(p|tr|div)>/g, '\n').replace(/<br\s*\/?>/g, '\n')
+  .replace(/<\/td><td[^>]*>/g, ' : ').replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+  .split('\n').map((l) => l.trim()).filter(Boolean).join('\n');
+
 async function send(key, payload) {
+  payload.text = toText(payload.html);
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
