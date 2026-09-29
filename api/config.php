@@ -10,7 +10,7 @@ return [
     // Qui est en copie (séparer plusieurs adresses par des virgules ; vide = personne)
     'notify_cc' => '',
     // Expéditeur : une adresse d'un nom de domaine hébergé chez OVH
-    'mail_from' => 'La Chapelle <reservation@blm-online.fr>',
+    'mail_from' => 'La Chapelle <reservation@lachapelle-carcassonne.com>',
     // Facultatif : clé Resend. Vide = envoi par le serveur d'e-mails OVH.
     'resend_api_key' => '',
 ];
