@@ -98,7 +98,7 @@ function dispo_endpoint(): void {
 // Données envoyées par le formulaire : JSON (JavaScript) ou formulaire classique.
 function read_request(): array {
     if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') json_out(['success' => false, 'error' => 'méthode'], 405);
-    $isJson = str_contains($_SERVER['CONTENT_TYPE'] ?? '', 'application/json');
+    $isJson = strpos($_SERVER['CONTENT_TYPE'] ?? '', 'application/json') !== false;
     if ($isJson) {
         $d = json_decode(file_get_contents('php://input') ?: '', true);
         if (!is_array($d)) json_out(['success' => false, 'error' => 'requête invalide'], 400);
