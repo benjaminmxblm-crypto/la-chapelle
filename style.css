@@ -90,6 +90,8 @@ header .btn:hover{background:var(--pierre-fonce);border-color:var(--pierre-fonce
 .perk h3{font-size:24px;margin-bottom:6px}
 .perk p{font-size:15px;color:var(--gris);line-height:1.6}
 @media(max-width:900px){.perks{grid-template-columns:1fr 1fr;row-gap:40px}}
+.perks.perks-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:900px){.perks.perks-3{grid-template-columns:1fr}}
 
 /* Présentation */
 .welcome{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(40px,7vw,110px);align-items:center}
