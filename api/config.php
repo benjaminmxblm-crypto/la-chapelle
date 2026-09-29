@@ -9,7 +9,7 @@ return [
     'notify_to' => 'benjamin.mx.blm@gmail.com', // TEST : remettre conciergerie.lauragaise11@gmail.com après les essais
     // Qui est en copie (séparer plusieurs adresses par des virgules ; vide = personne)
     'notify_cc' => '',
-    // Expéditeur : une adresse d'un nom de domaine hébergé chez OVH
+    // Expéditeur : une adresse d'un domaine rattaché à CE site chez OVH (sinon OVH bloque l'envoi)
     'mail_from' => 'La Chapelle <reservation@lachapelle-carcassonne.com>',
     // Facultatif : clé Resend. Vide = envoi par le serveur d'e-mails OVH.
     'resend_api_key' => '',
