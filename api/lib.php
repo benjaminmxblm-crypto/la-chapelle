@@ -125,6 +125,7 @@ function send_mail(array $to, array $cc, string $replyTo, string $subject, strin
     $c = cfg();
     $from = (string)($c['mail_from'] ?? '');
     $text = to_text($html);
+    if (empty($c['resend_api_key']) && is_file(__DIR__ . '/cache/resend.key')) $c['resend_api_key'] = trim((string)file_get_contents(__DIR__ . '/cache/resend.key'));
     if (!empty($c['resend_api_key'])) {
         $payload = ['from' => $from, 'to' => $to, 'subject' => $subject, 'html' => $html, 'text' => $text];
         if ($cc) $payload['cc'] = $cc;
@@ -134,6 +135,7 @@ function send_mail(array $to, array $cc, string $replyTo, string $subject, strin
             CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . $c['resend_api_key'], 'Content-Type: application/json'],
             CURLOPT_POSTFIELDS => json_encode($payload)]);
         $res = curl_exec($ch); $code = curl_getinfo($ch, CURLINFO_HTTP_CODE); curl_close($ch);
+        @file_put_contents(__DIR__ . '/cache/mail.log', date('c') . " resend $code to=" . implode(',', $to) . ' subj=' . mb_substr($subject, 0, 60) . "\n", FILE_APPEND | LOCK_EX);
         if ($code >= 200 && $code < 300) return true;
         error_log("Resend $code: $res");
         return false;

@@ -11,6 +11,6 @@ return [
     'notify_cc' => '',
     // Expéditeur : une adresse d'un domaine rattaché à CE site chez OVH (sinon OVH bloque l'envoi)
     'mail_from' => 'La Chapelle <reservation@lachapelle-carcassonne.com>',
-    // Facultatif : clé Resend. Vide = envoi par le serveur d'e-mails OVH.
+    // Clé Resend : ne pas l'écrire ici (GitHub la bloque). Elle s'enregistre via la page protégée api/reglage.php, dans api/cache/resend.key.
     'resend_api_key' => '',
 ];
