@@ -146,6 +146,7 @@ function send_mail(array $to, array $cc, string $replyTo, string $subject, strin
           . "--$b\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n" . chunk_split(base64_encode($html))
           . "--$b--\r\n";
     $ok = @mail(implode(', ', $to), enc_header($subject), $body, implode("\r\n", $headers), '-f' . bare_addr($from));
+    @file_put_contents(__DIR__ . '/cache/mail.log', date('c') . ' mail() ' . ($ok ? 'OK' : 'ECHEC') . ' to=' . implode(',', $to) . ' cc=' . implode(',', $cc) . ' subj=' . mb_substr($subject, 0, 60) . "\n", FILE_APPEND | LOCK_EX);
     if (!$ok) error_log('mail() a échoué');
     return $ok;
 }
