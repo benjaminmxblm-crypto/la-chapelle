@@ -83,7 +83,7 @@
     d.addEventListener('change', render);
   }
 
-  /* 4. Calendrier des disponibilités (lu depuis Airbnb via la fonction Netlify) */
+  /* 4. Calendrier des disponibilités (lu depuis Airbnb via api/dispo.php) */
   var cal = document.getElementById('cal');
   var busy = {}; var offset = 0;
   // en fin de mois, ouvrir directement sur le mois suivant
@@ -132,7 +132,7 @@
     });
     cal.querySelector('.prev').onclick = function () { if (offset > 0) { offset--; render(); } };
     cal.querySelector('.next').onclick = function () { if (offset < 8) { offset++; render(); } };
-    fetch('/.netlify/functions/dispo')
+    fetch('/api/dispo.php')
       .then(function (r) { if (!r.ok) throw 0; return r.json(); })
       .then(function (j) {
         (j.busy || []).forEach(function (r) { for (var x = r[0]; x < r[1]; x = addDays(x, 1)) busy[x] = 1; });
@@ -175,7 +175,7 @@
     });
   }
 
-  /* Envoi du formulaire vers notre fonction (e-mails via Resend) */
+  /* Envoi du formulaire vers api/reservation.php */
   var form = document.getElementById('booking');
   if (form) {
     form.addEventListener('submit', function (e) {

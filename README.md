@@ -1,7 +1,8 @@
 # La Chapelle – site de réservation directe
 
-Site vitrine du studio « La Chapelle » à Alzonne (Aude), hébergé sur Netlify.
+Site vitrine du studio « La Chapelle » à Alzonne (Aude), hébergé chez OVH (offre Pro, PHP).
 
 - `index.html` (FR) et `en/` (EN) : pages du site
-- `netlify/functions/dispo.mjs` : lit les calendriers iCal (variable d'environnement `ICAL_URLS`, jamais dans le code)
-- Formulaire de réservation : Netlify Forms, notifications envoyées à la conciergerie
+- `api/dispo.php` : lit le calendrier Airbnb (cache de 15 minutes dans `api/cache/`)
+- `api/reservation.php` : envoie la demande par e-mail à la conciergerie et un accusé de réception au client
+- `api/config.php` : réglages (lien du calendrier, e-mails). Non accessible depuis le web.

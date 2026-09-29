@@ -1,0 +1,4 @@
+# Les réglages et outils internes ne sont pas accessibles depuis le web
+<FilesMatch "^(config|config\.exemple|lib)\.php$">
+  Require all denied
+</FilesMatch>
