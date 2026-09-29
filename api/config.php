@@ -8,7 +8,7 @@ return [
     // Qui reçoit les demandes de réservation
     'notify_to' => 'conciergerie.lauragaise11@gmail.com',
     // Qui est en copie (séparer plusieurs adresses par des virgules ; vide = personne)
-    'notify_cc' => '',
+    'notify_cc' => 'benjamin.mx.blm@gmail.com',
     // Expéditeur : une adresse d'un domaine rattaché à CE site chez OVH (sinon OVH bloque l'envoi)
     'mail_from' => 'La Chapelle <reservation@lachapelle-carcassonne.com>',
     // Clé Resend : ne pas l'écrire ici (GitHub la bloque). Elle s'enregistre via la page protégée api/reglage.php, dans api/cache/resend.key.
