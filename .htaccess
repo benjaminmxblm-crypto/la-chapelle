@@ -1,8 +1,8 @@
-# Site en HTTPS uniquement : à réactiver une fois le certificat SSL du domaine en place
-# RewriteEngine On
-# RewriteCond %{HTTPS} !=on
-# RewriteCond %{HTTP:X-Forwarded-Proto} !https
-# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# Site en HTTPS uniquement
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # Pas de liste des fichiers
 Options -Indexes
