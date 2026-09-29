@@ -42,14 +42,18 @@ function long_date(string $iso, string $lang = 'fr'): string {
     return $W[$w] . ' ' . ($d === 1 ? '1er' : $d) . " {$M[$m]} $y";
 }
 
+$GLOBALS['http_diag'] = [];
 function http_get(string $url): ?string {
     $ch = curl_init($url);
     curl_setopt_array($ch, [
-        CURLOPT_RETURNTRANSFER => true, CURLOPT_FOLLOWLOCATION => true, CURLOPT_TIMEOUT => 12, CURLOPT_CONNECTTIMEOUT => 6,
-        CURLOPT_USERAGENT => 'Mozilla/5.0 (compatible; SiteCalendar/1.0)',
+        CURLOPT_RETURNTRANSFER => true, CURLOPT_FOLLOWLOCATION => true, CURLOPT_TIMEOUT => 15, CURLOPT_CONNECTTIMEOUT => 8,
+        CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36',
+        CURLOPT_HTTPHEADER => ['Accept: text/calendar,text/plain,*/*', 'Accept-Language: fr-FR,fr;q=0.9'],
+        CURLOPT_ENCODING => '',
     ]);
     $body = curl_exec($ch);
     $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $GLOBALS['http_diag'][] = ['code' => $code, 'err' => curl_error($ch), 'len' => is_string($body) ? strlen($body) : 0, 'debut' => is_string($body) ? substr($body, 0, 60) : ''];
     curl_close($ch);
     return ($body !== false && $code >= 200 && $code < 300) ? $body : null;
 }
@@ -80,6 +84,10 @@ function dispo_endpoint(): void {
     $dir = __DIR__ . '/cache';
     if (!is_dir($dir)) @mkdir($dir, 0755, true);
     $file = $dir . '/dispo.json';
+    if (($_GET['k'] ?? '') === 'c86c69f4c4440c3266c28428') {
+        $busy = read_busy($urls);
+        json_out(['diag' => $GLOBALS['http_diag'], 'nb' => $busy === null ? null : count($busy), 'cache' => is_file($file) ? gmdate('c', filemtime($file)) : null, 'ecriture' => is_writable($dir)]);
+    }
     if (is_file($file) && time() - filemtime($file) < 900) {
         header('Content-Type: application/json; charset=utf-8'); header('Cache-Control: public, max-age=900');
         readfile($file); exit;
