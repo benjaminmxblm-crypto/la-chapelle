@@ -177,6 +177,12 @@
 
   /* Envoi du formulaire vers api/reservation.php */
   var form = document.getElementById('booking');
+  var jeton = '', jetonAt = 0;
+  function getJeton() {
+    return fetch('/api/token.php', { cache: 'no-store' }).then(function (r) { return r.json(); })
+      .then(function (j) { jeton = j.t || ''; jetonAt = Date.now(); }).catch(function () {});
+  }
+  if (form) getJeton();
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -189,7 +195,13 @@
         services: fd.getAll('services'), botcheck: fd.get('botcheck') ? 1 : 0
       };
       btn.disabled = true; msg.textContent = '';
-      fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+      var go = function () {
+        data.jeton = jeton;
+        return fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      };
+      // jeton anti-robots : on le renouvelle s'il a plus d'une heure (2,5 s d'attente exigées par le serveur)
+      (Date.now() - jetonAt > 3600000 ? getJeton().then(function () { return new Promise(function (r) { setTimeout(r, 2500); }); }) : Promise.resolve())
+        .then(go)
         .then(function (r) { if (r.ok) location.href = form.dataset.thanks; else throw 0; })
         .catch(function () { btn.disabled = false; msg.textContent = form.dataset.err; });
     });

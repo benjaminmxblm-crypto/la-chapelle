@@ -1,5 +1,7 @@
 .DS_Store
 .netlify/
 api/cache/*.json
-api/cache/resend.key
 api/cache/mail.log
+api/cache/resend.key
+api/cache/secret.key
+api/cache/spam.log

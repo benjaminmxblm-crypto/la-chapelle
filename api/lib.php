@@ -160,3 +160,41 @@ function send_mail(array $to, array $cc, string $replyTo, string $subject, strin
     if (!$ok) error_log('mail() a échoué');
     return $ok;
 }
+
+// ---------- Protection anti-robots du formulaire ----------
+function secret_key(): string {
+    $f = __DIR__ . '/cache/secret.key';
+    if (!is_file($f)) { @file_put_contents($f, bin2hex(random_bytes(32)), LOCK_EX); @chmod($f, 0600); }
+    return (string)@file_get_contents($f);
+}
+// Jeton remis à la page au chargement : prouve que le formulaire a été rempli depuis le site.
+function form_token(): string { $t = (string)time(); return $t . '.' . hash_hmac('sha256', $t, secret_key()); }
+function token_ok($tok): bool {
+    if (!is_string($tok) || !preg_match('/^(\d{10})\.([a-f0-9]{64})$/', $tok, $m)) return false;
+    if (!hash_equals(hash_hmac('sha256', $m[1], secret_key()), $m[2])) return false;
+    $age = time() - (int)$m[1];
+    return $age >= 2 && $age <= 3 * 3600;
+}
+// Au plus 5 demandes par heure et par adresse IP.
+function rate_ok(int $max = 5): bool {
+    $f = __DIR__ . '/cache/ratelimit.json';
+    $ip = hash('sha256', ($_SERVER['REMOTE_ADDR'] ?? '') . secret_key());
+    $now = time();
+    $d = is_file($f) ? (json_decode((string)@file_get_contents($f), true) ?: []) : [];
+    foreach ($d as $k => $times) { $d[$k] = array_values(array_filter((array)$times, fn($t) => $now - $t < 3600)); if (!$d[$k]) unset($d[$k]); }
+    $ok = count($d[$ip] ?? []) < $max;
+    if ($ok) $d[$ip][] = $now;
+    @file_put_contents($f, json_encode($d), LOCK_EX);
+    return $ok;
+}
+// Contenu typique des robots : liens, dates absurdes.
+function looks_like_spam(array $fields, string $arr, string $dep): bool {
+    foreach ($fields as $v) { if (preg_match('~(https?:|://|www\.|\.workers\.dev|<a\s)~i', (string)$v)) return true; }
+    $today = gmdate('Y-m-d');
+    if ($arr < $today || $arr > gmdate('Y-m-d', strtotime('+2 years'))) return true;
+    if (nights($arr, $dep) > 60) return true;
+    return false;
+}
+function spam_log(string $why): void {
+    @file_put_contents(__DIR__ . '/cache/spam.log', date('c') . " $why\n", FILE_APPEND | LOCK_EX);
+}

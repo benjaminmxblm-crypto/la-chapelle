@@ -37,11 +37,14 @@ $done = function () use ($isJson, $lang) {
     header('Location: ' . ($lang === 'en' ? '/en/thanks.html' : '/merci.html'), true, 303); exit;
 };
 if (!empty($d['botcheck'])) $done(); // robot : on ignore sans le dire
+if (!token_ok($d['jeton'] ?? '')) { spam_log('jeton absent ou invalide'); json_out(['success' => false, 'error' => 'jeton'], 400); }
 
 $arr = $d['arrivee'] ?? ''; $dep = $d['depart'] ?? '';
 $email = trim((string)($d['email'] ?? ''));
 $nom = clip($d['nom'] ?? '', 120);
 if (!is_date($arr) || !is_date($dep) || $dep <= $arr || !is_mail($email) || $nom === '') json_out(['success' => false, 'error' => 'champs'], 400);
+if (looks_like_spam([$d['nom'] ?? '', $d['message'] ?? '', $d['telephone'] ?? ''], $arr, $dep)) { spam_log('contenu suspect'); $done(); }
+if (!rate_ok()) { spam_log('trop de demandes'); json_out(['success' => false, 'error' => 'limite'], 429); }
 $n = nights($arr, $dep);
 $services = array_slice(array_values(array_filter(array_map(fn($s) => clip($s, 60), (array)($d['services'] ?? [])), 'strlen')), 0, 10);
 $tel = clip($d['telephone'] ?? '', 40);
